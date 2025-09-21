@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- ✅ Mobile scaling -->
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      height:100vh;
+      background:#f5f9ff;
+      margin:0;
+      padding:10px;
+    }
+
+    .box {
+      background:white;
+      padding:30px 20px;
+      border-radius:15px;
+      box-shadow:0px 4px 20px rgba(0,0,0,0.1);
+      text-align:center;
+      width:100%;
+      max-width:350px; /* ✅ Scales nicely on large and small screens */
+    }
+
+    h2 {
+      margin-bottom:20px;
+      font-size:1.4rem;
+      color:#333;
+    }
+
+    input {
+      width:100%;
+      padding:12px;
+      margin:8px 0;
+      border:1px solid #ccc;
+      border-radius:8px;
+      font-size:15px;
+      box-sizing:border-box;
+    }
+
+    button {
+      width:100%;
+      padding:12px;
+      margin-top:12px;
+      border:none;
+      border-radius:8px;
+      background:#00c9af;
+      color:white;
+      font-size:16px;
+      cursor:pointer;
+      transition:background 0.3s;
+    }
+
+    button:hover {
+      background:#00a890;
+    }
+
+    .msg {
+      color:red;
+      margin-top:10px;
+      font-size:14px;
+    }
+
+    /* ✅ Responsive tweaks */
+    @media (max-width:480px) {
+      .box {
+        padding:20px 15px;
+        border-radius:12px;
+      }
+      h2 { font-size:1.2rem; }
+      input, button { font-size:14px; padding:10px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h2>Login to Exam Results</h2>
+    <input type="text" id="studentId" placeholder="Gali Student ID">
+    <input type="password" id="password" placeholder="Gali Password (first 3 digits)">
+    <button onclick="login()">Gal</button>
+    <div id="message" class="msg"></div>
+  </div>
+
+  <script>
+    const apiKey = "AIzaSyB9qb2HuOaQC2BTY_pi8yJPuVKerrovf0s";
+    const sheetId = "1fS3mYFbjyscj8jKJsn7pPbE40HyHj34gLMOiDFh6NrI";
+
+    async function login() {
+      const id = document.getElementById("studentId").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/Term1?majorDimension=ROWS&key=${apiKey}`;
+
+      const res = await fetch(url);
+      const data = await res.json();
+      const rows = data.values;
+
+      if (!rows || rows.length < 6) {
+        document.getElementById("message").innerText = "No data found.";
+        return;
+      }
+
+      let found = null;
+      for (let i = 5; i < rows.length; i++) {
+        if (rows[i][0] === id) {
+          const parent1 = rows[i][4] || "";
+          const parent2 = rows[i][5] || "";
+          if (parent1.startsWith(password) || parent2.startsWith(password)) {
+            found = rows[i];
+          }
+          break;
+        }
+      }
+
+      if (found) {
+        window.location.href = `choose-term.html?studentId=${id}`;
+      } else {
+        document.getElementById("message").innerText = "Wrong ID or password.";
+      }
+    }
+  </script>
+</body>
+</html>

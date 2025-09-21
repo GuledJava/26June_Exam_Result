@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- ✅ Makes responsive -->
+  <title>Choose Term</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: #f5f9ff;
+      margin: 0;
+      padding: 15px; /* ✅ spacing on small screens */
+    }
+
+    .box {
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0px 4px 20px rgba(0,0,0,0.1);
+      text-align: center;
+      width: 100%;
+      max-width: 500px;
+      position: relative;
+    }
+
+    h2 {
+      color: #00c9af;
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+    }
+
+    button {
+      display: block;
+      width: 100%;
+      margin: 10px 0;
+      padding: 14px;
+      border: none;
+      border-radius: 8px;
+      background: #00c9af;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #009c87;
+    }
+
+    /* 🔹 Back button */
+    .back-btn {
+      position: absolute;
+      top: 15px; left: 15px;
+      background: #00c9af; color: white;
+      border: none; border-radius: 50%;
+      width: 40px; height: 40px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      box-shadow: 0px 3px 8px rgba(0,0,0,0.2);
+    }
+
+    .back-btn:hover {
+      background: #009c87;
+    }
+
+    /* ✅ Responsive adjustments */
+    @media (max-width: 480px) {
+      .box {
+        padding: 20px;
+        border-radius: 12px;
+      }
+      h2 {
+        font-size: 1.2rem;
+      }
+      button {
+        font-size: 14px;
+        padding: 12px;
+      }
+      .back-btn {
+        width: 36px; height: 36px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <!-- 🔹 Back button -->
+    <button class="back-btn" onclick="goBack()">
+      <i class="fa-solid fa-arrow-left"></i>
+    </button>
+
+    <h2>Choose Term</h2>
+    <button onclick="openTerm('Term1')">Term 1</button>
+    <button onclick="openTerm('Term2')">Term 2</button>
+  </div>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const studentId = urlParams.get("studentId");
+
+    function openTerm(term) {
+      window.location.href = `result.html?studentId=${studentId}&term=${term}`;
+    }
+
+    function goBack() {
+      window.location.href = "login.html";
+    }
+  </script>
+</body>
+</html>
